@@ -1,0 +1,27 @@
+# Reference compose file for running this server on a persistent host. This
+# container does NOT terminate TLS itself - put it behind whatever reverse
+# proxy your infra already uses (nginx/Caddy/Traefik/cloud load balancer) and
+# have that proxy forward to http://mcp-commission-sync:3000 (or the mapped
+# host port below). See README.md "Deployment" for the full checklist.
+services:
+  mcp-commission-sync:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    environment:
+      # Inside the container the working directory is /app, so this resolves
+      # to the mounted volume below regardless of the host path.
+      DB_PATH: /app/data/commission-sync.sqlite
+    volumes:
+      - mcp-commission-sync-data:/app/data
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://localhost:3000/healthz', r => process.exit(r.statusCode === 200 ? 0 : 1)).on('error', () => process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      start_period: 10s
+
+volumes:
+  mcp-commission-sync-data:
