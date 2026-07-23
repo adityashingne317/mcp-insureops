@@ -12,7 +12,7 @@ data/
 *.sqlite-shm
 
 # Local MCP client config - contains a live bearer token once a client
-# connects (see mcp-commission-sync/docs/CONNECT_YOUR_AI_CLIENT.md).
+# connects (see docs/CONNECT_YOUR_AI_CLIENT.md).
 .cursor/mcp.json
 
 # Scratch auth-testing artifacts (real/synthetic tokens, local-only env files).
