@@ -125,6 +125,31 @@ describe("computeScheduleDiff", () => {
     );
   });
 
+  it("detects clearing effectiveTo (date -> null) as an open-ended end date", () => {
+    const current = makeCurrentRecord({
+      versions: [
+        {
+          id: "ver_1",
+          isActive: true,
+          effectiveFrom: "2026-01-01",
+          effectiveTo: "2099-12-31",
+          dimensionValues: [{ dimensionCode: "motor_cc_band", value: "125-250" }],
+          rateComponents: [{ componentType: "BROKERAGE", basisType: "NET_PREMIUM", rateType: "PERCENTAGE", rateValue: 15 }],
+        },
+      ],
+    });
+    const proposed = makeProposed({ effectiveTo: null });
+
+    const diff = computeScheduleDiff("update_existing_schedule", current, proposed);
+
+    expect(diff.scopeChanges).toContainEqual({
+      field: "effectiveTo",
+      oldValue: "2099-12-31",
+      newValue: null,
+    });
+    expect(diff.proposed.effectiveTo).toBeNull();
+  });
+
   it("insurerIds/planIds diff is order-insensitive (set equality, not array equality)", () => {
     const current = makeCurrentRecord({ insurers: [{ insurerId: "ins_2" }, { insurerId: "ins_1" }] });
     const proposed = makeProposed({ insurerIds: ["ins_1", "ins_2"] });

@@ -57,7 +57,10 @@ export const CommissionScheduleInput = z.object({
   code: z.string().optional(),
   priority: z.number().optional(),
   effectiveFrom: z.string(), // ISO date
-  effectiveTo: z.string().optional(),
+  // null = open-ended (clear end date). Matches backend Create/Update DTOs
+  // (`effectiveTo?: string | null`). Omission keeps the previous end date on
+  // update; null explicitly clears it. Do not use a sentinel like 2099-12-31.
+  effectiveTo: z.string().nullable().optional(),
   isActive: z.boolean().optional(),
   dimensionValues: z.array(DimensionValueInput).default([]),
   rateComponents: z.array(RateComponentInput).min(1),

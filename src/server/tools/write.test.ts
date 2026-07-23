@@ -158,6 +158,56 @@ describe("write flow: update_existing_schedule end to end", () => {
     expect(postMock).not.toHaveBeenCalled();
   });
 
+  it("accepts proposed.effectiveTo: null and PUTs null so the backend clears the end date", async () => {
+    currentRecord = baseRecord({
+      versions: [
+        {
+          ...baseVersion(),
+          effectiveFrom: "2026-01-01",
+          effectiveTo: "2099-12-31",
+        },
+      ],
+    });
+
+    // Keep rates identical so the only material clear is effectiveTo -> null.
+    const proposed = {
+      ...PROPOSED,
+      effectiveTo: null,
+      rateComponents: [{ componentType: "BROKERAGE", basisType: "NET_PREMIUM", rateType: "PERCENTAGE", rateValue: 15 }],
+    };
+
+    const diffResult = await callTool(
+      "diff_commission_schedule_change",
+      { mode: "update_existing_schedule", scheduleId: "sch_1", proposed },
+      FULL_ACCESS_SESSION
+    );
+    expect(diffResult.isError).toBeFalsy();
+    const diff = JSON.parse(textOf(diffResult));
+    expect(diff.proposed.effectiveTo).toBeNull();
+    expect(diff.scopeChanges).toContainEqual({
+      field: "effectiveTo",
+      oldValue: "2099-12-31",
+      newValue: null,
+    });
+
+    const crResult = await callTool(
+      "create_change_request",
+      { diffId: diff.diffId, sourceReference: "Clear open-ended end date" },
+      FULL_ACCESS_SESSION
+    );
+    const changeRequest = JSON.parse(textOf(crResult));
+
+    const applyResult = await callTool(
+      "apply_change_request",
+      { changeRequestId: changeRequest.changeRequestId, confirm: true },
+      FULL_ACCESS_SESSION
+    );
+    expect(applyResult.isError).toBeFalsy();
+    expect(putMock).toHaveBeenCalledTimes(1);
+    const putBody = putMock.mock.calls[0][1] as { effectiveTo: unknown };
+    expect(putBody.effectiveTo).toBeNull();
+  });
+
   it("refuses to apply a stale diff if the schedule changed after diff time (Task 3 guard)", async () => {
     const diffResult = await callTool(
       "diff_commission_schedule_change",

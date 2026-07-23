@@ -104,7 +104,9 @@ and live GET responses against `devapp.insureops.io`):
 - **`CommissionScheduleInput`** - the shape the LLM must normalize an insurer's document
   into, matching the backend's own POST/PUT body: `insurerIds[]`, `productId`,
   `planIds[]?`, `addonDefinitionIds[]?`, `countryId?`, `lobProfile`, `name`, `code?`,
-  `priority?`, `effectiveFrom`, `effectiveTo?`, `isActive?`, `dimensionValues[]` (the
+  `priority?`, `effectiveFrom`, `effectiveTo?` (`string | null`; `null` = open-ended /
+  clear end date — omitting the field on update keeps the previous end date), `isActive?`, `dimensionValues[]` (the
+
   "rule criteria" - `{ dimensionCode, value }` or `{ dimensionCode, minNumericValue,
   maxNumericValue }`), `rateComponents[]` (the rate table - `{ componentType, basisType,
   rateType, rateValue, addonDefinitionId? }`), `matchConditions?`.
