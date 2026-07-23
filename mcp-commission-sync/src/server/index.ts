@@ -104,7 +104,7 @@ app.use("/mcp", (req, res, next) => {
  */
 async function buildServerForSession(): Promise<McpServer> {
   const session = requireSession();
-  const server = new McpServer({ name: "mcp-commission-sync", version: "0.1.0" });
+  const server = new McpServer({ name: "Insureops MCP", version: "0.1.0" });
   const tools = await getToolsForSession(session);
 
   for (const tool of tools) {

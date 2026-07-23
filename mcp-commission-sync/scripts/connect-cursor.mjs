@@ -12,8 +12,8 @@
  *   --password ...              (otherwise prompted, hidden while typing)
  *   --project                   write to ./.cursor/mcp.json instead of the
  *                                global ~/.cursor/mcp.json
- *   --name commission-sync      server key name in mcpServers (default:
- *                                commission-sync)
+ *   --name "Insureops MCP"      server key name in mcpServers (default:
+ *                                "Insureops MCP")
  *
  * Requires only Node.js (18+) - no npm install needed.
  */
@@ -26,7 +26,7 @@ import { join, dirname } from "node:path";
 const BACKEND_LOGIN_URL = "https://devapp.insureops.io/api/v1/auth/login";
 
 function parseArgs(argv) {
-  const args = { project: false, name: "commission-sync" };
+  const args = { project: false, name: "Insureops MCP" };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     if (a === "--server") args.server = argv[++i];
@@ -50,7 +50,7 @@ Optional:
   --password ...              InsureOps password (prompted, hidden, if omitted)
   --project                   write to ./.cursor/mcp.json (this folder only)
                                instead of ~/.cursor/mcp.json (all of Cursor)
-  --name commission-sync      the key name used in mcpServers (default: commission-sync)
+  --name "Insureops MCP"      the key name used in mcpServers (default: "Insureops MCP")
 `);
 }
 

@@ -92,7 +92,7 @@ this page to get a fresh one when your client starts rejecting calls.</p>`
 function resultPage(mcpUrl: string, accessToken: string, expiresIn: number | undefined): string {
   const config = {
     mcpServers: {
-      "commission-sync": {
+      "Insureops MCP": {
         url: mcpUrl,
         headers: { Authorization: `Bearer ${accessToken}` },
       },

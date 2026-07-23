@@ -61,7 +61,7 @@ code. It only takes a minute.
 3. Click **Add new MCP server** (or **+ Add**).
 4. There should be a box where you can paste text. Paste the whole code you
    copied in Step 1 into it, exactly as it is, then save.
-5. If nothing seems to happen within about 10 seconds, find "commission-sync"
+5. If nothing seems to happen within about 10 seconds, find "Insureops MCP"
    in that same MCP settings list and click the switch next to it to turn it
    off, then on again.
 6. That's it. Start a new chat and try asking: *"List all insurers for my
@@ -88,7 +88,7 @@ ask your IT contact to install it for you first (it takes them two minutes) -
    ```json
    {
      "mcpServers": {
-       "commission-sync": {
+       "Insureops MCP": {
          "url": "https://.......… /mcp",
          "headers": {
            "Authorization": "Bearer ......................."
@@ -106,7 +106,7 @@ ask your IT contact to install it for you first (it takes them two minutes) -
    ```json
    {
      "mcpServers": {
-       "commission-sync": {
+       "Insureops MCP": {
          "command": "npx",
          "args": [
            "-y",
@@ -121,7 +121,7 @@ ask your IT contact to install it for you first (it takes them two minutes) -
    ```
 
    If the file already has other things listed inside `"mcpServers": { ... }`,
-   don't delete them - just add `"commission-sync": { ... }` alongside them,
+   don't delete them - just add `"Insureops MCP": { ... }` alongside them,
    with a comma between entries. If none of this makes sense, don't worry -
    ask your IT contact to do this one-time step for you; it only takes a
    minute once they have your access code from Step 1.
